@@ -24,14 +24,14 @@ public class Cliente implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
-	private TipoCliente tipo;
+	private Integer tipo;
 
 	@OneToMany(mappedBy = "cliente")
 	private Set<Endereco> enderecos = new HashSet<>();
@@ -48,7 +48,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo;
+		this.tipo = (tipo == null) ? null : tipo.getCode();
 	}
 
 	public Integer getId() {
@@ -84,11 +84,11 @@ public class Cliente implements Serializable {
 	}
 
 	public TipoCliente getTipo() {
-		return tipo;
+		return TipoCliente.toEnum(tipo);
 	}
 
 	public void setTipo(TipoCliente tipo) {
-		this.tipo = tipo;
+		this.tipo = tipo.getCode();
 	}
 
 	public Set<Endereco> getEnderecos() {

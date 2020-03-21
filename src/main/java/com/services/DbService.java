@@ -5,12 +5,17 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.enums.TipoCliente;
 import com.models.Categoria;
 import com.models.Cidade;
+import com.models.Cliente;
+import com.models.Endereco;
 import com.models.Estado;
 import com.models.Produto;
 import com.repositories.CategoriaRepository;
 import com.repositories.CidadeRepository;
+import com.repositories.ClienteRepository;
+import com.repositories.EnderecoRepository;
 import com.repositories.EstadoRepository;
 import com.repositories.ProdutoRepository;
 
@@ -28,6 +33,12 @@ public class DbService {
 
 	@Autowired
 	private CidadeRepository _cidadeRepository;
+
+	@Autowired
+	private ClienteRepository _clienteRepository;
+
+	@Autowired
+	private EnderecoRepository _enderecoRepository;
 
 	public void instanciateDataBase() {
 
@@ -61,5 +72,15 @@ public class DbService {
 
 		_estadoRepository.saveAll(Arrays.asList(est1, est2));
 		_cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+		Cliente cli1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+		_clienteRepository.saveAll(Arrays.asList(cli1));
+		_enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	}
 }
