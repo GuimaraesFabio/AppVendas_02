@@ -14,6 +14,7 @@ import com.models.Cidade;
 import com.models.Cliente;
 import com.models.Endereco;
 import com.models.Estado;
+import com.models.ItemPedido;
 import com.models.Pagamento;
 import com.models.PagamentoComBoleto;
 import com.models.PagamentoComCartao;
@@ -24,6 +25,7 @@ import com.repositories.CidadeRepository;
 import com.repositories.ClienteRepository;
 import com.repositories.EnderecoRepository;
 import com.repositories.EstadoRepository;
+import com.repositories.ItemPedidoRepository;
 import com.repositories.PagamentoRepository;
 import com.repositories.PedidoRepository;
 import com.repositories.ProdutoRepository;
@@ -54,6 +56,9 @@ public class DbService {
 
 	@Autowired
 	private PagamentoRepository _pagamentoRepository;
+
+	@Autowired
+	private ItemPedidoRepository _itemPedidoRepository;
 
 	public void instanciateDataBase() throws ParseException {
 
@@ -112,5 +117,19 @@ public class DbService {
 
 		_pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		_pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		_itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+
 	}
 }
