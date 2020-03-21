@@ -26,7 +26,7 @@ public abstract class Pagamento implements Serializable {
 	
 	@Id
 	private Integer id;
-	private EstadoPagamento descricao;
+	private Integer descricao;
 
 
 	@OneToOne
@@ -39,7 +39,7 @@ public abstract class Pagamento implements Serializable {
 
 	public Pagamento(Integer id, EstadoPagamento descricao, Pedido pedido) {
 		this.id = id;
-		this.descricao = descricao;
+		this.descricao = (descricao == null) ? null : descricao.getCode();
 		this.pedido = pedido;
 	}
 
@@ -52,11 +52,11 @@ public abstract class Pagamento implements Serializable {
 	}
 
 	public EstadoPagamento getDescricao() {
-		return descricao;
+		return EstadoPagamento.toEnum(descricao);
 	}
 
 	public void setDescricao(EstadoPagamento descricao) {
-		this.descricao = descricao;
+		this.descricao = descricao.getCode();
 	}
 
 	public Pedido getPedido() {
