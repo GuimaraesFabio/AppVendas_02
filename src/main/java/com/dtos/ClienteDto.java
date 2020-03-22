@@ -2,8 +2,15 @@ package com.dtos;
 
 import java.io.Serializable;
 
-import com.models.Cliente;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.models.Cliente;
+import com.services.validation.ClienteUpdate;
+
+@ClienteUpdate
 public class ClienteDto implements Serializable {
 
 	/**
@@ -11,8 +18,11 @@ public class ClienteDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
-	
+	@NotEmpty(message = "Campo nome não pode ser vazio/nulo.")
+	@Length(min = 5, max = 60, message = "O nome deve conter de 5 a 120 caracteres.")
 	private String nome;
+	@NotEmpty(message = "Campo email não pode ser vazio/nulo.")
+	@Email(message = "Email invalido.")
 	private String email;
 	
 	public ClienteDto() {
