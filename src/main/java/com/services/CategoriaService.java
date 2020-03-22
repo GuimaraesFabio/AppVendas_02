@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.dtos.CategoriaDto;
 import com.models.Categoria;
 import com.repositories.CategoriaRepository;
+import com.services.exceptions.DataIntegrityException;
 import com.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -47,6 +49,17 @@ public class CategoriaService {
 		Categoria newObj = findById(obj.getId());
 		updateData(newObj, obj);
 		return _repository.save(newObj);
+	}
+	
+	public void delete (Integer id) {
+		
+		findById(id);
+		try {
+			_repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Erro ao excluir, existem relacionamento entre a categoria e demais entidades.");
+		}
+		
 	}
 
 	private void updateData(Categoria newObj, Categoria obj) {
