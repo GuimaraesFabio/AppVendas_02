@@ -34,7 +34,7 @@ public class Pedido implements Serializable {
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -102,6 +102,14 @@ public class Pedido implements Serializable {
 
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
+	}
+
+	public Double getValorTotal() {
+		double sum = 0.0;
+		for (ItemPedido x : itens) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
