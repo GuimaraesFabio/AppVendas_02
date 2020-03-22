@@ -3,8 +3,10 @@ package com.models;
 import javax.persistence.Entity;
 
 import com.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
 	/**
