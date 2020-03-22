@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.dtos.CategoriaDto;
 import com.models.Categoria;
 import com.repositories.CategoriaRepository;
 import com.services.exceptions.ObjectNotFoundException;
@@ -33,5 +34,16 @@ public class CategoriaService {
 
 		PageRequest pr = PageRequest.of(page, linePerPage, Direction.valueOf(direction), orderBy);
 		return _repository.findAll(pr);
+	}
+
+	public Categoria insert(Categoria obj) {
+		if (obj.getId() == null) {
+			_repository.save(obj);
+		}
+		return obj;
+	}
+
+	public Categoria fromDto(CategoriaDto objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 }
